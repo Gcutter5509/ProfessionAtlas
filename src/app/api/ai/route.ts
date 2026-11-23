@@ -2,9 +2,8 @@ import { createTextStreamResponse, streamText, toTextStream } from "ai";
 import { findCity } from "@/data/cities";
 import { getProfession, type Profession, type Trait } from "@/data/professions";
 import {
-  AI_MODEL,
   SYSTEM,
-  aiAvailable,
+  getModel,
   fallbackProfession,
   fallbackTest,
   freeProfessionPrompt,
@@ -46,7 +45,7 @@ export async function POST(request: Request) {
     const name = String(body.name ?? "").trim().slice(0, 80);
     if (name.length < 2) return plain("Введите название профессии", 400);
     prompt = freeProfessionPrompt(name, city);
-    fallback = `## ${name}\n\nПопробуй найти похожую профессию в каталоге.\n\n*ИИ-описание недоступно: на сервере не настроен ключ AI_GATEWAY_API_KEY.*`;
+    fallback = `## ${name}\n\nПопробуй найти похожую профессию в каталоге.\n\n*ИИ-описание недоступно: на сервере не настроен ключ ИИ (GOOGLE_GENERATIVE_AI_API_KEY).*`;
   } else if (body.kind === "test") {
     const scores = Object.fromEntries(
       TRAIT_KEYS.map((t) => [t, Math.max(0, Math.min(100, Number(body.scores?.[t]) || 0))]),
@@ -62,13 +61,14 @@ export async function POST(request: Request) {
     return plain("Неизвестный тип запроса", 400);
   }
 
-  if (!aiAvailable()) return plain(fallback);
+  const model = getModel();
+  if (!model) return plain(fallback);
 
   const result = streamText({
-    model: AI_MODEL,
+    model,
     instructions: SYSTEM,
     prompt,
-    maxOutputTokens: 1500,
+    maxOutputTokens: 4096,
     onError({ error }) {
       console.error("AI error:", error);
     },
@@ -90,7 +90,7 @@ export async function POST(request: Request) {
       } catch (error) {
         console.error("AI stream error:", error);
       }
-      if (!any) controller.enqueue(fallback.replace(/\*[^*\n]*AI_GATEWAY_API_KEY[^*\n]*\*/, "*ИИ сейчас недоступен — показана справка из базы.*"));
+      if (!any) controller.enqueue(fallback.replace(/\*[^*\n]*GOOGLE_GENERATIVE_AI_API_KEY[^*\n]*\*/, "*ИИ сейчас недоступен — показана справка из базы.*"));
       controller.close();
     },
   });

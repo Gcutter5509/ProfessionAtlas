@@ -28,8 +28,9 @@ npm run dev                  # http://localhost:3000
 
 | Переменная | Зачем | Где взять |
 |---|---|---|
-| `AI_GATEWAY_API_KEY` | ИИ-описания и объяснение теста | vercel.com/ai-gateway (на Vercel не нужен — работает OIDC) |
-| `AI_MODEL` | какая модель пишет тексты | по умолчанию `anthropic/claude-sonnet-5.5` |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | ИИ-описания и объяснение теста (бесплатный Gemini API) | aistudio.google.com/apikey |
+| `GEMINI_MODEL` | модель Gemini | по умолчанию `gemini-flash-latest` |
+| `AI_GATEWAY_API_KEY`, `AI_MODEL` | запасной вариант — Vercel AI Gateway, если ключ Google не задан | vercel.com/ai-gateway |
 | `HH_ACCESS_TOKEN` | живые вакансии и зарплаты | зарегистрировать приложение на dev.hh.ru, получить токен приложения |
 
 ## Где что лежит

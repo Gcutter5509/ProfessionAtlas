@@ -1,11 +1,21 @@
 import { formatStudy, type Profession, TRAITS, type Trait } from "@/data/professions";
 import type { City } from "@/data/cities";
+import { google } from "@ai-sdk/google";
+import type { LanguageModel } from "ai";
 
-export const AI_MODEL = process.env.AI_MODEL || "anthropic/claude-sonnet-5.5";
-
-/** ИИ доступен, если задан ключ Vercel AI Gateway (локально) или проект развёрнут на Vercel (OIDC) */
-export function aiAvailable() {
-  return Boolean(process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN);
+/**
+ * Выбор модели:
+ * 1) GOOGLE_GENERATIVE_AI_API_KEY — бесплатный Gemini API (ключ из Google AI Studio);
+ * 2) иначе Vercel AI Gateway (AI_GATEWAY_API_KEY или OIDC на Vercel).
+ */
+export function getModel(): LanguageModel | null {
+  if (process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    return google(process.env.GEMINI_MODEL || "gemini-flash-latest");
+  }
+  if (process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN) {
+    return process.env.AI_MODEL || "anthropic/claude-sonnet-5.5";
+  }
+  return null;
 }
 
 export const SYSTEM = `Ты — дружелюбный профориентолог для выпускников школ Казахстана (15–18 лет).
@@ -98,7 +108,7 @@ ${p.skills.map((s) => `- ${s}`).join("\n")}
 ## Где работать
 ${p.workplaces.map((w) => `- ${w}`).join("\n")}
 
-*ИИ-описание недоступно: на сервере не настроен ключ AI_GATEWAY_API_KEY. Показана справка из базы.*`;
+*ИИ-описание недоступно: на сервере не настроен ключ ИИ (GOOGLE_GENERATIVE_AI_API_KEY). Показана справка из базы.*`;
 }
 
 export function fallbackTest(scores: Record<Trait, number>, top: Profession[]) {
@@ -124,5 +134,5 @@ ${top
 - Сходи на день открытых дверей в колледж или вуз (раздел «Дни профессий»)
 - Выбери профильные предметы ЕНТ под подходящую сферу
 
-*Подробное ИИ-объяснение недоступно: не настроен AI_GATEWAY_API_KEY.*`;
+*Подробное ИИ-объяснение недоступно: не настроен ключ ИИ (GOOGLE_GENERATIVE_AI_API_KEY).*`;
 }
