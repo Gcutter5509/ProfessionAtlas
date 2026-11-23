@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     const name = String(body.name ?? "").trim().slice(0, 80);
     if (name.length < 2) return plain("Введите название профессии", 400);
     prompt = freeProfessionPrompt(name, city);
-    fallback = `## ${name}\n\nИИ-описание недоступно: на сервере не настроен ключ AI_GATEWAY_API_KEY. Попробуй найти похожую профессию в каталоге.`;
+    fallback = `## ${name}\n\nПопробуй найти похожую профессию в каталоге.\n\n*ИИ-описание недоступно: на сервере не настроен ключ AI_GATEWAY_API_KEY.*`;
   } else if (body.kind === "test") {
     const scores = Object.fromEntries(
       TRAIT_KEYS.map((t) => [t, Math.max(0, Math.min(100, Number(body.scores?.[t]) || 0))]),
@@ -74,5 +74,26 @@ export async function POST(request: Request) {
     },
   });
 
-  return createTextStreamResponse({ stream: toTextStream({ stream: result.stream }) });
+  // streamText гасит ошибки модели; если ИИ не выдал ни символа — отдаём справку из базы
+  const source = toTextStream({ stream: result.stream });
+  const stream = new ReadableStream<string>({
+    async start(controller) {
+      let any = false;
+      try {
+        const reader = source.getReader();
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          if (value) any = true;
+          controller.enqueue(value);
+        }
+      } catch (error) {
+        console.error("AI stream error:", error);
+      }
+      if (!any) controller.enqueue(fallback.replace(/\*[^*\n]*AI_GATEWAY_API_KEY[^*\n]*\*/, "*ИИ сейчас недоступен — показана справка из базы.*"));
+      controller.close();
+    },
+  });
+
+  return createTextStreamResponse({ stream });
 }
