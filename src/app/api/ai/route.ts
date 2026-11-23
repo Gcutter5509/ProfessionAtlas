@@ -9,7 +9,7 @@ import {
   professionPrompt,
   testPrompt,
 } from "@/lib/ai";
-import { generateCached } from "@/lib/ai-cache";
+import { generateCached, pauseAfterError } from "@/lib/ai-cache";
 import { getVacancyStats } from "@/lib/hh";
 
 type Body =
@@ -65,7 +65,12 @@ export async function POST(request: Request) {
   try {
     return plain(await generateCached(prompt));
   } catch (error) {
-    console.error("AI error:", error);
+    if (error instanceof Error && error.name === "AiPausedError") {
+      // пауза после отказа провайдера — сразу отдаём справку, без запроса к ИИ
+    } else {
+      console.error("AI error:", error);
+      pauseAfterError(error);
+    }
     return plain(fallback.replace(/\*[^*\n]*GOOGLE_GENERATIVE_AI_API_KEY[^*\n]*\*/, "*ИИ сейчас недоступен — показана справка из базы.*"));
   }
 }
