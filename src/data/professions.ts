@@ -1,10 +1,12 @@
+import { typoDeep } from "@/lib/typograf";
+
 /**
  * Тип личности по модели Холланда (RIASEC), адаптированной для школьников.
  * R — Практик, I — Исследователь, A — Творец, S — Помощник, E — Лидер, C — Организатор
  */
 export type Trait = "R" | "I" | "A" | "S" | "E" | "C";
 
-export const TRAITS: Record<Trait, { name: string; about: string }> = {
+export const TRAITS: Record<Trait, { name: string; about: string }> = typoDeep({
   R: {
     name: "Практик",
     about: "любит работать руками, с техникой и инструментами, видеть осязаемый результат",
@@ -29,7 +31,7 @@ export const TRAITS: Record<Trait, { name: string; about: string }> = {
     name: "Организатор",
     about: "любит порядок, точность, работу с данными, документами и правилами",
   },
-};
+}, []);
 
 export type Sphere =
   | "IT и цифровые технологии"
@@ -80,7 +82,7 @@ const BACHELOR = (spec: string, years = 4) => ({
   years,
 });
 
-export const PROFESSIONS: Profession[] = [
+export const PROFESSIONS: Profession[] = typoDeep([
   // ───────────── IT ─────────────
   {
     slug: "programmist",
@@ -1019,7 +1021,7 @@ export const PROFESSIONS: Profession[] = [
     hh: "научный сотрудник",
     workplaces: ["НИИ", "Университеты", "Институт ядерной физики", "Байконур"],
   },
-];
+], ["slug", "sphere", "traits", "hh"]);
 
 export const SPHERES = Array.from(new Set(PROFESSIONS.map((p) => p.sphere))) as Sphere[];
 

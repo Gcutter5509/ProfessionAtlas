@@ -1,4 +1,5 @@
 import { PROFESSIONS, type Profession } from "./professions";
+import { typoDeep } from "@/lib/typograf";
 
 /**
  * Дифференциально-диагностический опросник (ДДО) Е. А. Климова.
@@ -16,7 +17,7 @@ export const KLIMOV_MAX = 8;
 export const KLIMOV_TYPES: Record<
   KlimovType,
   { name: string; short: string; about: string; needs: string; examples: string }
-> = {
+> = typoDeep({
   N: {
     name: "Человек – природа",
     short: "Природа",
@@ -52,10 +53,10 @@ export const KLIMOV_TYPES: Record<
     needs: "Художественные способности, творческое воображение, развитое зрительное восприятие и образное мышление.",
     examples: "дизайнер, архитектор, журналист, музыкант, видеограф, актёр",
   },
-};
+}, []);
 
 /** 20 пар утверждений — оригинальный текст методики */
-export const KLIMOV_QUESTIONS: { a: string; b: string }[] = [
+export const KLIMOV_QUESTIONS: { a: string; b: string }[] = typoDeep([
   { a: "Ухаживать за животными", b: "Обслуживать машины, приборы (следить, регулировать)" },
   { a: "Помогать больным людям, лечить их", b: "Составлять таблицы, схемы, программы для вычислительных машин" },
   {
@@ -118,7 +119,7 @@ export const KLIMOV_QUESTIONS: { a: string; b: string }[] = [
     a: "Вести борьбу с болезнями растений, вредителями леса и сада",
     b: "Работать на клавишных машинах (пишущей машинке, телетайпе, наборной машине и др.)",
   },
-];
+], []);
 
 /** Ключ: какой тип засчитывается за ответ «А» и «Б» в каждой паре */
 export const KLIMOV_KEY: [KlimovType, KlimovType][] = [

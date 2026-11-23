@@ -60,3 +60,50 @@ body {
 .md ul { list-style: disc; padding-left: 1.25rem; margin: .4rem 0; }
 .md li { margin: .2rem 0; line-height: 1.55; }
 .md em { color: var(--muted); }
+
+/* ---------- Анимации и интерактив ---------- */
+@keyframes art-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+.art-float { animation: art-float 5s ease-in-out infinite; transform-box: fill-box; }
+.group:not(:hover) .art-float { animation-play-state: paused; }
+.art-float-always .art-float { animation-play-state: running !important; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-up { animation: fade-up .35s ease-out backwards; }
+
+@keyframes pop {
+  0% { transform: scale(.96); }
+  60% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+.pop { animation: pop .3s ease-out; }
+
+/* Плавное появление блоков при прокрутке (где браузер поддерживает) */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: fade-up linear backwards;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-float, .fade-up, .pop, .reveal { animation: none !important; }
+}
+
+/* Акцент в цвет сферы: страница профессии перекрашивается в гамму своей картинки */
+.sphere-accent {
+  --accent: color-mix(in srgb, var(--sphere) 85%, var(--foreground));
+  --accent-soft: color-mix(in srgb, var(--sphere) 12%, var(--card));
+}
+@media (prefers-color-scheme: dark) {
+  .sphere-accent {
+    --accent: color-mix(in srgb, var(--sphere) 70%, var(--foreground));
+    --accent-soft: color-mix(in srgb, var(--sphere) 22%, var(--card));
+  }
+}

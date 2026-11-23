@@ -11,14 +11,16 @@ import {
 } from "@/lib/ai";
 import { generateCached, pauseAfterError } from "@/lib/ai-cache";
 import { getVacancyStats } from "@/lib/hh";
+import { typoMarkdown } from "@/lib/typograf";
 
 type Body =
   | { kind: "profession"; slug: string; city?: string }
   | { kind: "free"; name: string; city?: string }
   | { kind: "test"; scores: Record<KlimovType, number>; slugs: string[]; city?: string };
 
+/** Ответ — Markdown, поэтому типографируем его построчно, не трогая маркеры */
 function plain(text: string, status = 200) {
-  return new Response(text, { status, headers: { "Content-Type": "text/plain; charset=utf-8" } });
+  return new Response(typoMarkdown(text), { status, headers: { "Content-Type": "text/plain; charset=utf-8" } });
 }
 
 export async function POST(request: Request) {

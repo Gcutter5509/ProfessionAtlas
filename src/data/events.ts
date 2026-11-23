@@ -1,3 +1,5 @@
+import { typoDeep } from "@/lib/typograf";
+
 export type CareerEvent = {
   title: string;
   when: string;
@@ -12,7 +14,7 @@ export type CareerEvent = {
  * Форматы профориентационных мероприятий.
  * Сюда же можно добавлять конкретные события с датами и адресом для своего города.
  */
-export const EVENTS: CareerEvent[] = [
+export const EVENTS: CareerEvent[] = typoDeep([
   {
     title: "Дни открытых дверей в вузах",
     when: "Обычно март–май",
@@ -77,4 +79,4 @@ export const EVENTS: CareerEvent[] = [
     how: "Узнай в аграрном университете или колледже своего региона о программах для школьников.",
     professions: ["agronom", "veterinar", "ekolog", "biotehnolog"],
   },
-];
+], ["professions"]);
