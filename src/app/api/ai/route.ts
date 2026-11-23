@@ -1,9 +1,7 @@
-import { createTextStreamResponse, streamText, toTextStream } from "ai";
 import { findCity } from "@/data/cities";
 import { KLIMOV_KEYS, KLIMOV_MAX, type KlimovType } from "@/data/klimov";
 import { getProfession, type Profession } from "@/data/professions";
 import {
-  SYSTEM,
   getModel,
   fallbackProfession,
   fallbackTest,
@@ -11,6 +9,7 @@ import {
   professionPrompt,
   testPrompt,
 } from "@/lib/ai";
+import { generateCached } from "@/lib/ai-cache";
 import { getVacancyStats } from "@/lib/hh";
 
 type Body =
@@ -41,7 +40,8 @@ export async function POST(request: Request) {
     prompt = professionPrompt(p, city, stats.ok ? { avg: stats.avgSalary, found: stats.found } : undefined);
     fallback = fallbackProfession(p, city);
   } else if (body.kind === "free") {
-    const name = String(body.name ?? "").trim().slice(0, 80);
+    // нормализуем название, чтобы «Пилот» и « пилот » попадали в один кэш
+    const name = String(body.name ?? "").trim().replace(/\s+/g, " ").toLowerCase().slice(0, 80);
     if (name.length < 2) return plain("Введите название профессии", 400);
     prompt = freeProfessionPrompt(name, city);
     fallback = `## ${name}\n\nПопробуй найти похожую профессию в каталоге.\n\n*ИИ-описание недоступно: на сервере не настроен ключ ИИ (GOOGLE_GENERATIVE_AI_API_KEY).*`;
@@ -60,39 +60,12 @@ export async function POST(request: Request) {
     return plain("Неизвестный тип запроса", 400);
   }
 
-  const model = getModel();
-  if (!model) return plain(fallback);
+  if (!getModel()) return plain(fallback);
 
-  const result = streamText({
-    model,
-    instructions: SYSTEM,
-    prompt,
-    maxOutputTokens: 4096,
-    onError({ error }) {
-      console.error("AI error:", error);
-    },
-  });
-
-  // streamText гасит ошибки модели; если ИИ не выдал ни символа — отдаём справку из базы
-  const source = toTextStream({ stream: result.stream });
-  const stream = new ReadableStream<string>({
-    async start(controller) {
-      let any = false;
-      try {
-        const reader = source.getReader();
-        for (;;) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          if (value) any = true;
-          controller.enqueue(value);
-        }
-      } catch (error) {
-        console.error("AI stream error:", error);
-      }
-      if (!any) controller.enqueue(fallback.replace(/\*[^*\n]*GOOGLE_GENERATIVE_AI_API_KEY[^*\n]*\*/, "*ИИ сейчас недоступен — показана справка из базы.*"));
-      controller.close();
-    },
-  });
-
-  return createTextStreamResponse({ stream });
+  try {
+    return plain(await generateCached(prompt));
+  } catch (error) {
+    console.error("AI error:", error);
+    return plain(fallback.replace(/\*[^*\n]*GOOGLE_GENERATIVE_AI_API_KEY[^*\n]*\*/, "*ИИ сейчас недоступен — показана справка из базы.*"));
+  }
 }
