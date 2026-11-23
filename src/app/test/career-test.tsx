@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { gradient, KLIMOV_THEME, KlimovArt, SphereArt, textColor } from "@/components/art";
@@ -7,7 +8,6 @@ import { useCity } from "@/components/city";
 import { Markdown } from "@/components/markdown";
 import { useAiStream } from "@/components/use-ai-stream";
 import {
-  KLIMOV_KEY,
   KLIMOV_KEYS,
   KLIMOV_MAX,
   KLIMOV_QUESTIONS,
@@ -20,11 +20,18 @@ import {
 
 const TOTAL = KLIMOV_QUESTIONS.length;
 
+/** Картинка к паре: слева занятие «А», справа — «Б» (сгенерированы под каждый вопрос) */
+const questionImage = (step: number) => `/test/q${String(step + 1).padStart(2, "0")}.svg`;
+
 export function CareerTest() {
   const { city } = useCity();
   const [answers, setAnswers] = useState<number[]>([]);
   const [step, setStep] = useState(0);
   const ai = useAiStream();
+  // Подсветка привязана к вопросу, поэтому при переходе к следующему сбрасывается сама
+  const [hover, setHover] = useState<{ step: number; side: number } | null>(null);
+  const hoverSide = hover?.step === step ? hover.side : null;
+  const setHoverSide = (side: number | null) => setHover(side === null ? null : { step, side });
   const done = answers.length === TOTAL && step >= TOTAL;
 
   const result = useMemo(() => {
@@ -62,6 +69,11 @@ export function CareerTest() {
     return () => window.removeEventListener("keydown", onKey);
   }, [done]);
 
+  // Заранее подгружаем картинку следующего вопроса
+  useEffect(() => {
+    if (step + 1 < TOTAL) new window.Image().src = questionImage(step + 1);
+  }, [step]);
+
   function restart() {
     setAnswers([]);
     setStep(0);
@@ -95,21 +107,54 @@ export function CareerTest() {
           ))}
         </div>
         <h2 className="mt-6 text-center text-lg font-semibold sm:text-xl">Что бы ты выбрал(а)?</h2>
-        <div key={step} className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-stretch">
+        <div key={step} className="fade-up relative mt-5 overflow-hidden rounded-2xl border border-line">
+          <Image
+            src={questionImage(step)}
+            alt={`Слева: ${q.a.toLowerCase()}. Справа: ${q.b.toLowerCase()}`}
+            width={1200}
+            height={600}
+            unoptimized
+            priority
+            className="aspect-[2/1] w-full object-cover"
+          />
+          {/* Половины картинки тоже кликабельны: левая — «А», правая — «Б» */}
+          {[0, 1].map((i) => (
+            <button
+              key={i}
+              tabIndex={-1}
+              aria-hidden
+              onClick={() => answer(i)}
+              onMouseEnter={() => setHoverSide(i)}
+              onMouseLeave={() => setHoverSide(null)}
+              className={`absolute inset-y-0 w-1/2 transition-colors ${i === 0 ? "left-0" : "right-0"} ${
+                hoverSide !== null && hoverSide !== i ? "bg-background/55" : ""
+              }`}
+            >
+              <span
+                className={`absolute bottom-3 flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold shadow transition ${
+                  i === 0 ? "left-3" : "right-3"
+                } ${hoverSide === i || answers[step] === i ? "bg-accent text-white" : "bg-card text-accent"}`}
+              >
+                {i === 0 ? "А" : "Б"}
+              </span>
+            </button>
+          ))}
+        </div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-stretch">
           {[q.a, q.b].map((text, i) => (
             <Option
-              key={i}
+              key={`${step}-${i}`}
               letter={i === 0 ? "А" : "Б"}
               text={text}
-              type={KLIMOV_KEY[step][i]}
-              seed={`${step}-${i}`}
               chosen={answers[step] === i}
+              highlighted={hoverSide === i}
               onClick={() => answer(i)}
+              onHover={(on) => setHoverSide(on ? i : null)}
               delay={i * 80}
-              order={i === 0 ? "sm:order-1" : "sm:order-3"}
+              order={i === 0 ? "order-1" : "order-3"}
             />
           ))}
-          <div className="flex items-center justify-center text-sm font-semibold text-muted sm:order-2">или</div>
+          <div className="order-2 -my-1 flex items-center justify-center text-sm font-semibold text-muted sm:my-0">или</div>
         </div>
         <p className="mt-5 hidden text-center text-xs text-muted sm:block">Можно отвечать клавишами ← и →</p>
       </div>
@@ -204,37 +249,42 @@ export function CareerTest() {
 function Option({
   letter,
   text,
-  type,
-  seed,
   chosen,
+  highlighted,
   onClick,
+  onHover,
   delay,
   order,
 }: {
   letter: string;
   text: string;
-  type: KlimovType;
-  seed: string;
   chosen: boolean;
+  highlighted: boolean;
   onClick: () => void;
+  onHover: (on: boolean) => void;
   delay: number;
   order: string;
 }) {
   return (
     <button
       onClick={onClick}
+      onMouseEnter={() => onHover(true)}
+      onMouseLeave={() => onHover(false)}
+      onFocus={() => onHover(true)}
+      onBlur={() => onHover(false)}
       style={{ animationDelay: `${delay}ms` }}
-      className={`fade-up group flex flex-row overflow-hidden rounded-2xl border-2 text-left transition hover:-translate-y-1 hover:border-accent hover:shadow-xl active:scale-[.98] sm:flex-col ${order} ${
-        chosen ? "border-accent bg-accent-soft" : "border-line"
+      className={`fade-up group flex items-start gap-3 rounded-2xl border-2 p-4 text-left transition hover:-translate-y-0.5 hover:shadow-lg active:scale-[.98] ${order} ${
+        chosen ? "border-accent bg-accent-soft" : highlighted ? "border-accent" : "border-line"
       }`}
     >
-      <KlimovArt type={type} seed={seed} className="w-24 shrink-0 sm:h-32 sm:w-full" />
-      <span className="flex flex-1 items-start gap-3 p-4">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-soft text-sm font-semibold text-accent group-hover:bg-accent group-hover:text-white">
-          {letter}
-        </span>
-        <span>{text}</span>
+      <span
+        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-semibold transition ${
+          highlighted || chosen ? "bg-accent text-white" : "bg-accent-soft text-accent"
+        }`}
+      >
+        {letter}
       </span>
+      <span>{text}</span>
     </button>
   );
 }
