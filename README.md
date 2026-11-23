@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧭 Атлас профессий
 
-## Getting Started
+Сайт профориентации для выпускников школ Казахстана.
 
-First, run the development server:
+## Что умеет
+
+- **Каталог из 55 профессий** в 12 сферах: что делает специалист, чем полезен людям, навыки, где работать, предметы ЕНТ.
+- **Выбор города** (24 города Казахстана) — сохраняется в браузере и влияет на всё:
+  - **вакансии с hh.kz** по выбранному городу, топ работодателей;
+  - **средняя и медианная зарплата**, посчитанная по вакансиям (только вилки в ₸);
+  - если API hh не подключён — оценка по встроенной базе с коэффициентом города.
+- **Срок обучения** и путь после школы (колледж / бакалавриат / резидентура).
+- **ИИ-гид**: при открытии профессии ИИ пишет подробное описание с учётом города и живых данных по вакансиям. Можно спросить про любую профессию, которой нет в каталоге.
+- **Тест на 18 вопросов** (модель Холланда / RIASEC): профиль личности, подходящие профессии с процентом совпадения и объяснение от ИИ, почему они подходят.
+- **Дни профессий**: форматы экскурсий, дней открытых дверей и job shadowing.
+
+## Запуск
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # заполните ключи
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Без ключей сайт тоже работает: вместо ИИ показывается справка из базы, вместо живых вакансий — оценка и ссылка на поиск hh.kz.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Ключи
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Переменная | Зачем | Где взять |
+|---|---|---|
+| `AI_GATEWAY_API_KEY` | ИИ-описания и объяснение теста | vercel.com/ai-gateway (на Vercel не нужен — работает OIDC) |
+| `AI_MODEL` | какая модель пишет тексты | по умолчанию `anthropic/claude-sonnet-5.5` |
+| `HH_ACCESS_TOKEN` | живые вакансии и зарплаты | зарегистрировать приложение на dev.hh.ru, получить токен приложения |
 
-## Learn More
+## Где что лежит
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/data/professions.ts` — база профессий (добавлять новые сюда)
+- `src/data/cities.ts` — города, ID регионов hh, коэффициенты зарплат
+- `src/data/events.ts` — дни профессий и экскурсии
+- `src/lib/hh.ts` — запрос к API hh.kz и расчёт статистики (кэш 1 час)
+- `src/lib/ai.ts`, `src/app/api/ai/route.ts` — промпты и стриминг ответа ИИ
+- `src/app/test/career-test.tsx` — вопросы теста и алгоритм подбора
