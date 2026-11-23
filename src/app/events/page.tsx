@@ -8,7 +8,7 @@ export default function EventsPage() {
   return (
     <div className="space-y-8">
       <header className="max-w-3xl">
-        <h1 className="text-3xl font-bold">Дни профессий: посмотри работу вживую</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Дни профессий: посмотри работу вживую</h1>
         <p className="mt-2 text-muted">
           Лучший способ понять профессию — увидеть, где и как работают специалисты. Здесь собраны форматы, которые доступны
           школьникам в Казахстане, и подсказки, как на них попасть.
@@ -17,8 +17,8 @@ export default function EventsPage() {
 
       <div className="grid gap-4 md:grid-cols-2">
         {EVENTS.map((e) => (
-          <article key={e.title} className="flex flex-col rounded-2xl border border-line bg-card p-5">
-            <div className="flex items-start justify-between gap-3">
+          <article key={e.title} className="flex flex-col rounded-2xl border border-line bg-card p-4 sm:p-5">
+            <div className="flex flex-col-reverse items-start gap-2 sm:flex-row sm:justify-between sm:gap-3">
               <h2 className="text-lg font-semibold">
                 {e.icon} {e.title}
               </h2>

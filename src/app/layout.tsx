@@ -19,22 +19,22 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col font-sans">
         <CityProvider>
           <header className="sticky top-0 z-20 border-b border-line bg-card/90 backdrop-blur">
-            <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
-              <Link href="/" className="text-lg font-bold tracking-tight">
+            <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-2.5 sm:py-3">
+              <Link href="/" className="whitespace-nowrap text-base font-bold tracking-tight sm:text-lg">
                 🧭 Атлас профессий
               </Link>
-              <nav className="flex gap-4 text-sm text-muted">
-                <Link href="/" className="hover:text-foreground">Каталог</Link>
-                <Link href="/test" className="hover:text-foreground">Тест</Link>
-                <Link href="/events" className="hover:text-foreground">Дни профессий</Link>
-              </nav>
-              <div className="ml-auto">
+              <div className="ml-auto sm:order-last">
                 <CitySelect />
               </div>
+              <nav className="no-scrollbar -mx-4 flex w-full gap-1 overflow-x-auto px-3 text-sm text-muted sm:mx-0 sm:w-auto sm:gap-4 sm:overflow-visible sm:px-0">
+                <Link href="/" className="whitespace-nowrap rounded-lg px-2 py-1.5 hover:text-foreground sm:px-0 sm:py-0">Каталог</Link>
+                <Link href="/test" className="whitespace-nowrap rounded-lg px-2 py-1.5 hover:text-foreground sm:px-0 sm:py-0">Тест</Link>
+                <Link href="/events" className="whitespace-nowrap rounded-lg px-2 py-1.5 hover:text-foreground sm:px-0 sm:py-0">Дни профессий</Link>
+              </nav>
             </div>
           </header>
-          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
-          <footer className="border-t border-line py-6 text-center text-xs text-muted">
+          <main className="mx-auto w-full min-w-0 max-w-6xl flex-1 px-4 py-6 sm:py-8">{children}</main>
+          <footer className="border-t border-line px-4 py-6 text-center text-xs text-muted">
             Зарплаты — ориентир: живые данные hh.kz или оценка по базе. Проверяй информацию на сайтах вузов и работодателей.
           </footer>
         </CityProvider>

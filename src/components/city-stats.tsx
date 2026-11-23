@@ -45,9 +45,9 @@ export function CityStats({ p }: { p: Profession }) {
         <div className="mt-4 space-y-3">
           {bars.map((b) => (
             <div key={b.label}>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between gap-3 text-sm">
                 <span className={"live" in b ? "font-medium text-accent" : "text-muted"}>{b.label}</span>
-                <span className="font-semibold">{fmt(b.value)} ₸</span>
+                <span className="shrink-0 font-semibold">{fmt(b.value)} ₸</span>
               </div>
               <div className="mt-1 h-2.5 rounded-full bg-accent-soft">
                 <div

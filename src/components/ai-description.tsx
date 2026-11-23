@@ -17,7 +17,7 @@ export function AiDescription({ slug, name }: { slug: string; name: string }) {
   }, [slug, city.hhId]);
 
   return (
-    <section className="rounded-2xl border border-accent/40 bg-card p-5">
+    <section className="min-w-0 rounded-2xl border border-accent/40 bg-card p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-lg font-semibold">🤖 ИИ-гид: «{name}» в городе {city.name}</h2>
         <button

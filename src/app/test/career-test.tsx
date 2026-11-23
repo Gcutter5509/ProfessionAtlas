@@ -86,7 +86,7 @@ export function CareerTest() {
   if (!done || !result) {
     const q = QUESTIONS[step];
     return (
-      <div className="mx-auto max-w-2xl rounded-3xl border border-line bg-card p-6 sm:p-10">
+      <div className="mx-auto max-w-2xl rounded-3xl border border-line bg-card p-5 sm:p-10">
         <div className="flex items-center justify-between text-sm text-muted">
           <span>
             Вопрос {step + 1} из {QUESTIONS.length}
@@ -100,8 +100,8 @@ export function CareerTest() {
         <div className="mt-3 h-2 rounded-full bg-accent-soft">
           <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${(step / QUESTIONS.length) * 100}%` }} />
         </div>
-        <h2 className="mt-8 min-h-[4rem] text-xl font-semibold sm:text-2xl">{q.text}</h2>
-        <div className="mt-6 grid gap-3 sm:grid-cols-4">
+        <h2 className="mt-6 min-h-[5.5rem] text-lg font-semibold sm:mt-8 sm:min-h-[4rem] sm:text-2xl">{q.text}</h2>
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-6 sm:grid-cols-4">
           {ANSWERS.map((a, i) => (
             <button
               key={a}

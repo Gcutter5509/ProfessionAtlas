@@ -36,7 +36,22 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  overflow-x: clip;
+  overflow-wrap: break-word;
+  -webkit-text-size-adjust: 100%;
 }
+
+/* На телефонах поля ввода не меньше 16px — иначе iOS увеличивает страницу при фокусе */
+@media (max-width: 639px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
 .md h2 { font-size: 1.1rem; font-weight: 650; margin: 1.25rem 0 .4rem; }
 .md h2:first-child { margin-top: 0; }

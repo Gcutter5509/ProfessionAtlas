@@ -29,8 +29,8 @@ export default async function ProfessionPage({ params }: PageProps<"/professions
 
       <header>
         <span className="text-sm font-medium text-accent">{p.sphere}</span>
-        <h1 className="mt-1 text-3xl font-bold">{p.name}</h1>
-        <p className="mt-2 max-w-3xl text-lg text-muted">{p.short}</p>
+        <h1 className="mt-1 text-2xl font-bold sm:text-3xl">{p.name}</h1>
+        <p className="mt-2 max-w-3xl text-base text-muted sm:text-lg">{p.short}</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {p.traits.map((t) => (
             <span key={t} className="rounded-full bg-accent-soft px-3 py-1 text-sm" title={TRAITS[t].about}>
@@ -40,15 +40,15 @@ export default async function ProfessionPage({ params }: PageProps<"/professions
         </div>
       </header>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         <Fact title="🎓 Срок обучения" value={formatStudy(p.study.years)} note={p.study.path} />
         <Fact title="📝 Предметы ЕНТ" value={p.ent} />
         <Fact title="❤️ Польза людям" value={p.benefit} small />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
-        <div className="space-y-6">
-          <section className="rounded-2xl border border-line bg-card p-5">
+        <div className="min-w-0 space-y-6">
+          <section className="rounded-2xl border border-line bg-card p-4 sm:p-5">
             <h2 className="text-lg font-semibold">🛠 Что делает</h2>
             <ul className="mt-3 list-disc space-y-1 pl-5">
               {p.tasks.map((t) => (

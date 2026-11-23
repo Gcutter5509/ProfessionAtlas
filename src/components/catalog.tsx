@@ -51,7 +51,7 @@ export function Catalog() {
         </select>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
         <Chip active={!sphere} onClick={() => setSphere(null)}>
           Все сферы
         </Chip>
@@ -72,7 +72,7 @@ export function Catalog() {
           <Link
             key={p.slug}
             href={`/professions/${p.slug}`}
-            className="group flex flex-col rounded-2xl border border-line bg-card p-5 transition hover:-translate-y-0.5 hover:border-accent hover:shadow-lg"
+            className="group flex flex-col rounded-2xl border border-line bg-card p-4 transition sm:p-5 hover:-translate-y-0.5 hover:border-accent hover:shadow-lg"
           >
             <span className="text-xs font-medium text-accent">{p.sphere}</span>
             <h3 className="mt-1 font-semibold leading-snug group-hover:text-accent">{p.name}</h3>
@@ -107,7 +107,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
   return (
     <button
       onClick={onClick}
-      className={`rounded-full border px-3 py-1 text-sm transition ${
+      className={`shrink-0 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm transition sm:py-1 ${
         active ? "border-accent bg-accent text-white" : "border-line bg-card hover:border-accent"
       }`}
     >
@@ -129,7 +129,7 @@ function AskAnyProfession({ initial }: { initial: string }) {
         Напиши любую профессию — ИИ расскажет, что это, где учиться в Казахстане и сколько можно зарабатывать.
       </p>
       <form
-        className="mt-3 flex gap-2"
+        className="mt-3 flex flex-col gap-2 sm:flex-row"
         onSubmit={(e) => {
           e.preventDefault();
           if (value.trim()) ai.run({ kind: "free", name: value, city: city.hhId });
@@ -144,7 +144,7 @@ function AskAnyProfession({ initial }: { initial: string }) {
         />
         <button
           disabled={ai.loading}
-          className="rounded-xl bg-accent px-4 py-2 font-medium text-white disabled:opacity-60"
+          className="rounded-xl bg-accent px-4 py-2.5 font-medium text-white disabled:opacity-60 sm:py-2"
         >
           {ai.loading ? "Пишу…" : "Рассказать"}
         </button>
