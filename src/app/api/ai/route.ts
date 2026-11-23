@@ -1,6 +1,7 @@
 import { createTextStreamResponse, streamText, toTextStream } from "ai";
 import { findCity } from "@/data/cities";
-import { getProfession, type Profession, type Trait } from "@/data/professions";
+import { KLIMOV_KEYS, KLIMOV_MAX, type KlimovType } from "@/data/klimov";
+import { getProfession, type Profession } from "@/data/professions";
 import {
   SYSTEM,
   getModel,
@@ -15,9 +16,7 @@ import { getVacancyStats } from "@/lib/hh";
 type Body =
   | { kind: "profession"; slug: string; city?: string }
   | { kind: "free"; name: string; city?: string }
-  | { kind: "test"; scores: Record<Trait, number>; slugs: string[]; city?: string };
-
-const TRAIT_KEYS: Trait[] = ["R", "I", "A", "S", "E", "C"];
+  | { kind: "test"; scores: Record<KlimovType, number>; slugs: string[]; city?: string };
 
 function plain(text: string, status = 200) {
   return new Response(text, { status, headers: { "Content-Type": "text/plain; charset=utf-8" } });
@@ -48,8 +47,8 @@ export async function POST(request: Request) {
     fallback = `## ${name}\n\nПопробуй найти похожую профессию в каталоге.\n\n*ИИ-описание недоступно: на сервере не настроен ключ ИИ (GOOGLE_GENERATIVE_AI_API_KEY).*`;
   } else if (body.kind === "test") {
     const scores = Object.fromEntries(
-      TRAIT_KEYS.map((t) => [t, Math.max(0, Math.min(100, Number(body.scores?.[t]) || 0))]),
-    ) as Record<Trait, number>;
+      KLIMOV_KEYS.map((t) => [t, Math.max(0, Math.min(KLIMOV_MAX, Math.round(Number(body.scores?.[t]) || 0)))]),
+    ) as Record<KlimovType, number>;
     const top = (body.slugs ?? [])
       .slice(0, 8)
       .map(getProfession)

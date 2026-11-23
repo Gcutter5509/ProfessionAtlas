@@ -7,10 +7,9 @@ export function CitySelect() {
   const { city, setCity } = useCity();
   return (
     <label className="flex items-center gap-2 text-sm">
-      <span className="text-muted">
-        📍<span className="hidden sm:inline"> Город:</span>
-      </span>
+      <span className="hidden text-muted sm:inline">Город:</span>
       <select
+        aria-label="Город"
         value={city.hhId}
         onChange={(e) => setCity(e.target.value)}
         className="rounded-lg border border-line bg-card px-3 py-1.5 font-medium outline-none focus:border-accent"

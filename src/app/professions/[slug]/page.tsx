@@ -41,21 +41,21 @@ export default async function ProfessionPage({ params }: PageProps<"/professions
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
-        <Fact title="🎓 Срок обучения" value={formatStudy(p.study.years)} note={p.study.path} />
-        <Fact title="📝 Предметы ЕНТ" value={p.ent} />
-        <Fact title="❤️ Польза людям" value={p.benefit} small />
+        <Fact title="Срок обучения" value={formatStudy(p.study.years)} note={p.study.path} />
+        <Fact title="Предметы ЕНТ" value={p.ent} />
+        <Fact title="Польза людям" value={p.benefit} small />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
         <div className="min-w-0 space-y-6">
           <section className="rounded-2xl border border-line bg-card p-4 sm:p-5">
-            <h2 className="text-lg font-semibold">🛠 Что делает</h2>
+            <h2 className="text-lg font-semibold">Что делает</h2>
             <ul className="mt-3 list-disc space-y-1 pl-5">
               {p.tasks.map((t) => (
                 <li key={t}>{t}</li>
               ))}
             </ul>
-            <h2 className="mt-6 text-lg font-semibold">🧠 Какие навыки нужны</h2>
+            <h2 className="mt-6 text-lg font-semibold">Какие навыки нужны</h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {p.skills.map((s) => (
                 <span key={s} className="rounded-lg border border-line px-3 py-1 text-sm">
@@ -63,7 +63,7 @@ export default async function ProfessionPage({ params }: PageProps<"/professions
                 </span>
               ))}
             </div>
-            <h2 className="mt-6 text-lg font-semibold">📍 Где работать</h2>
+            <h2 className="mt-6 text-lg font-semibold">Где работать</h2>
             <ul className="mt-3 list-disc space-y-1 pl-5">
               {p.workplaces.map((w) => (
                 <li key={w}>{w}</li>

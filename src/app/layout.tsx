@@ -21,7 +21,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <header className="sticky top-0 z-20 border-b border-line bg-card/90 backdrop-blur">
             <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-2.5 sm:py-3">
               <Link href="/" className="whitespace-nowrap text-base font-bold tracking-tight sm:text-lg">
-                🧭 Атлас профессий
+                Атлас профессий
               </Link>
               <div className="ml-auto sm:order-last">
                 <CitySelect />

@@ -1,5 +1,4 @@
 export type CareerEvent = {
-  icon: string;
   title: string;
   when: string;
   about: string;
@@ -15,7 +14,6 @@ export type CareerEvent = {
  */
 export const EVENTS: CareerEvent[] = [
   {
-    icon: "🎓",
     title: "Дни открытых дверей в вузах",
     when: "Обычно март–май",
     about: "Университеты показывают факультеты, лаборатории и общежития, рассказывают о грантах и проходных баллах ЕНТ.",
@@ -24,7 +22,6 @@ export const EVENTS: CareerEvent[] = [
     professions: [],
   },
   {
-    icon: "🏫",
     title: "Дни открытых дверей в колледжах",
     when: "Обычно апрель–июнь",
     about: "Колледжи дают профессию за 2–4 года и часто — места по госзаказу. Можно увидеть мастерские и практику.",
@@ -33,7 +30,6 @@ export const EVENTS: CareerEvent[] = [
     professions: ["elektrik", "svarshchik", "avtomehanik", "povar", "medsestra"],
   },
   {
-    icon: "🏭",
     title: "Экскурсия на предприятие",
     when: "Круглый год, по записи",
     about: "Заводы, энергетические и горнодобывающие компании проводят экскурсии для школьников и ведут профориентационные программы.",
@@ -42,7 +38,6 @@ export const EVENTS: CareerEvent[] = [
     professions: ["inzhener-energetik", "gorny-inzhener", "mehatronik", "himik-tehnolog", "inzhener-neftegaz"],
   },
   {
-    icon: "💻",
     title: "IT-хакатоны и дни в технопарках",
     when: "Круглый год",
     about: "Технопарки и IT-хабы проводят хакатоны, митапы и экскурсии в офисы IT-компаний — часто доступны школьникам.",
@@ -51,7 +46,6 @@ export const EVENTS: CareerEvent[] = [
     professions: ["programmist", "frontend", "data-analyst", "ux-designer", "game-dev", "ai-engineer"],
   },
   {
-    icon: "🩺",
     title: "День в больнице / медицинском университете",
     when: "Чаще весной",
     about: "Медицинские вузы и клиники проводят дни открытых дверей, показывают симуляционные центры с манекенами-пациентами.",
@@ -60,7 +54,6 @@ export const EVENTS: CareerEvent[] = [
     professions: ["vrach-terapevt", "hirurg", "stomatolog", "medsestra", "laborant", "farmacevt"],
   },
   {
-    icon: "👥",
     title: "«День с профессионалом» (job shadowing)",
     when: "По договорённости",
     about: "Ты проводишь один рабочий день рядом со специалистом и видишь всё изнутри — самый честный способ проверить профессию.",
@@ -69,7 +62,6 @@ export const EVENTS: CareerEvent[] = [
     professions: [],
   },
   {
-    icon: "📋",
     title: "Ярмарки вакансий и профессий",
     when: "Весна и осень",
     about: "Центры занятости, акиматы и вузы проводят ярмарки, где работодатели рассказывают о вакансиях и стажировках.",
@@ -78,7 +70,6 @@ export const EVENTS: CareerEvent[] = [
     professions: ["menedzher-prodazh", "hr", "logist", "buhgalter"],
   },
   {
-    icon: "🌾",
     title: "Выезд на ферму или в агрохолдинг",
     when: "Весна–осень",
     about: "Современное сельское хозяйство — это дроны, датчики почвы и спутниковые снимки. Можно увидеть всё вживую.",

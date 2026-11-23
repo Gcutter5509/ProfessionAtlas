@@ -124,7 +124,7 @@ function AskAnyProfession({ initial }: { initial: string }) {
 
   return (
     <section className="rounded-2xl border border-dashed border-accent bg-card p-5">
-      <h2 className="font-semibold">🤖 Не нашёл профессию? Спроси ИИ</h2>
+      <h2 className="font-semibold">Не нашёл профессию? Спроси ИИ</h2>
       <p className="mt-1 text-sm text-muted">
         Напиши любую профессию — ИИ расскажет, что это, где учиться в Казахстане и сколько можно зарабатывать.
       </p>

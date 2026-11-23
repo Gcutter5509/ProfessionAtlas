@@ -39,7 +39,7 @@ export function CityStats({ p }: { p: Profession }) {
     <div className="space-y-6">
       <section className="rounded-2xl border border-line bg-card p-5">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-lg font-semibold">💰 Зарплата в городе {city.name}</h2>
+          <h2 className="text-lg font-semibold">Зарплата в городе {city.name}</h2>
           <span className="text-xs text-muted">₸ в месяц, до вычета налогов</span>
         </div>
         <div className="mt-4 space-y-3">
@@ -69,7 +69,7 @@ export function CityStats({ p }: { p: Profession }) {
 
       <section className="rounded-2xl border border-line bg-card p-5">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-lg font-semibold">🏢 Вакансии в городе {city.name}</h2>
+          <h2 className="text-lg font-semibold">Вакансии в городе {city.name}</h2>
           {stats && (
             <a href={stats.searchUrl} target="_blank" rel="noreferrer" className="text-sm text-accent hover:underline">
               Все вакансии на hh.kz →

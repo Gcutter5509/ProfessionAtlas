@@ -6,7 +6,7 @@ export type City = {
   salaryK: number;
 };
 
-export const CITIES: City[] = [
+const CITY_LIST: City[] = [
   { hhId: "160", name: "Алматы", salaryK: 1 },
   { hhId: "159", name: "Астана", salaryK: 1.03 },
   { hhId: "205", name: "Шымкент", salaryK: 0.75 },
@@ -33,7 +33,11 @@ export const CITIES: City[] = [
   { hhId: "171", name: "Конаев", salaryK: 0.75 },
 ];
 
-export const DEFAULT_CITY = CITIES[0];
+/** Города по алфавиту */
+export const CITIES: City[] = [...CITY_LIST].sort((a, b) => a.name.localeCompare(b.name, "ru"));
+
+/** По умолчанию — Алматы */
+export const DEFAULT_CITY = CITIES.find((c) => c.hhId === "160")!;
 
 export function findCity(hhId: string | null | undefined): City {
   return CITIES.find((c) => c.hhId === hhId) ?? DEFAULT_CITY;

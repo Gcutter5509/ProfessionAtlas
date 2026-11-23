@@ -20,7 +20,7 @@ export default function EventsPage() {
           <article key={e.title} className="flex flex-col rounded-2xl border border-line bg-card p-4 sm:p-5">
             <div className="flex flex-col-reverse items-start gap-2 sm:flex-row sm:justify-between sm:gap-3">
               <h2 className="text-lg font-semibold">
-                {e.icon} {e.title}
+                {e.title}
               </h2>
               <span className="shrink-0 rounded-full bg-accent-soft px-3 py-1 text-xs font-medium">{e.when}</span>
             </div>
