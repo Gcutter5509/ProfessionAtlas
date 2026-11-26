@@ -6,10 +6,11 @@ import { formatStudy, type Profession, PROFESSIONS, SPHERES, TRAITS } from "@/da
 import { gradient, SPHERE_THEME, SphereArt, textColor } from "./art";
 import { plainText } from "@/lib/typograf";
 import { useCity } from "./city";
+import { CityMarket, liveSalary, useCityOverview } from "./city-market";
 import { Markdown } from "./markdown";
 import { useAiStream } from "./use-ai-stream";
 
-type Sort = "name" | "salary" | "study";
+type Sort = "name" | "salary" | "study" | "demand";
 
 export function Catalog() {
   const { city } = useCity();
@@ -18,6 +19,15 @@ export function Catalog() {
   const [sort, setSort] = useState<Sort>("name");
   const [compare, setCompare] = useState<string[]>([]);
   const [showCompare, setShowCompare] = useState(false);
+  const overview = useCityOverview(city.hhId);
+  const market = overview.data?.ok ? overview.data : null;
+  const bySlug = useMemo(() => new Map(market?.professions.map((m) => [m.slug, m])), [market]);
+
+  /** Зарплата для карточки, тыс. ₸: медиана hh.kz, если данных достаточно, иначе оценка по базе */
+  const salaryOf = (p: Profession) => {
+    const live = liveSalary(bySlug.get(p.slug));
+    return live ? { value: Math.round(live / 1000), live: true } : { value: Math.round(p.salary[1] * city.salaryK), live: false };
+  };
 
   function toggleCompare(slug: string) {
     setCompare((c) => (c.includes(slug) ? c.filter((x) => x !== slug) : c.length >= 3 ? [...c.slice(1), slug] : [...c, slug]));
@@ -32,12 +42,15 @@ export function Catalog() {
     );
     return filtered.sort((a, b) =>
       sort === "salary"
-        ? b.salary[1] - a.salary[1]
-        : sort === "study"
-          ? a.study.years - b.study.years
-          : a.name.localeCompare(b.name, "ru"),
+        ? salaryOf(b).value - salaryOf(a).value
+        : sort === "demand"
+          ? (bySlug.get(b.slug)?.found ?? -1) - (bySlug.get(a.slug)?.found ?? -1)
+          : sort === "study"
+            ? a.study.years - b.study.years
+            : a.name.localeCompare(b.name, "ru"),
     );
-  }, [q, sphere, sort]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- salaryOf зависит только от bySlug и city
+  }, [q, sphere, sort, bySlug, city]);
 
   return (
     <div className="space-y-5">
@@ -54,6 +67,7 @@ export function Catalog() {
           className="rounded-xl border border-line bg-card px-3 py-2.5"
         >
           <option value="name">По алфавиту</option>
+          <option value="demand">Больше всего вакансий</option>
           <option value="salary">Сначала с высокой зарплатой</option>
           <option value="study">Сначала с коротким обучением</option>
         </select>
@@ -70,11 +84,14 @@ export function Catalog() {
         ))}
       </div>
 
+      <CityMarket city={city} overview={overview} />
+
       <Roulette />
 
       <p className="text-sm text-muted">
-        Найдено: {list.length}. Зарплаты указаны для города <b className="text-foreground">{city.name}</b> (оценка, опытный
-        специалист). Отметь до трёх профессий кнопкой «Сравнить», чтобы увидеть их рядом.
+        Найдено: {list.length}. Зарплаты и вакансии — для города <b className="text-foreground">{city.name}</b>: медиана по
+        вакансиям hh.kz, а где их мало — оценка для опытного специалиста. Отметь до трёх профессий кнопкой «Сравнить», чтобы
+        увидеть их рядом.
       </p>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -82,7 +99,8 @@ export function Catalog() {
           <ProfessionCard
             key={p.slug}
             p={p}
-            salary={Math.round(p.salary[1] * city.salaryK)}
+            salary={salaryOf(p)}
+            vacancies={overview.loading ? undefined : (bySlug.get(p.slug)?.found ?? null)}
             selected={compare.includes(p.slug)}
             onCompare={() => toggleCompare(p.slug)}
           />
@@ -154,11 +172,14 @@ function Chip({
 function ProfessionCard({
   p,
   salary,
+  vacancies,
   selected,
   onCompare,
 }: {
   p: Profession;
-  salary: number;
+  salary: { value: number; live: boolean };
+  /** undefined — ещё загружаем, null — нет данных */
+  vacancies?: number | null;
   selected: boolean;
   onCompare: () => void;
 }) {
@@ -179,14 +200,29 @@ function ProfessionCard({
           <p className="mt-2 flex-1 text-sm text-muted">{p.short}</p>
           <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
             <div className="rounded-lg bg-accent-soft px-3 py-2">
-              <div className="text-xs text-muted">Зарплата</div>
-              <div className="font-semibold">~{salary} тыс. ₸</div>
+              <div className="text-xs text-muted" title={salary.live ? "Медиана по вакансиям hh.kz" : "Оценка по базе"}>
+                {salary.live ? "Зарплата · hh.kz" : "Зарплата · оценка"}
+              </div>
+              <div className="font-semibold">~{salary.value} тыс. ₸</div>
             </div>
             <div className="rounded-lg bg-accent-soft px-3 py-2">
               <div className="text-xs text-muted">Учиться</div>
               <div className="font-semibold">{formatStudy(p.study.years)}</div>
             </div>
           </div>
+          {vacancies !== null && (
+            <div className="mt-2 text-xs text-muted">
+              {vacancies === undefined ? (
+                <span className="inline-block h-3 w-28 animate-pulse rounded bg-accent-soft align-middle" />
+              ) : vacancies === 0 ? (
+                "Сейчас нет вакансий в этом городе"
+              ) : (
+                <>
+                  Вакансий на hh.kz: <b className="text-foreground">{vacancies.toLocaleString("ru-RU")}</b>
+                </>
+              )}
+            </div>
+          )}
           <div className="mt-3 flex flex-wrap gap-1">
             {p.traits.map((t) => (
               <span key={t} className="rounded-full border border-line px-2 py-0.5 text-xs text-muted">

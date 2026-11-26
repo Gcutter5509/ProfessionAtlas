@@ -10,7 +10,7 @@ import {
   testPrompt,
 } from "@/lib/ai";
 import { generateCached, pauseAfterError } from "@/lib/ai-cache";
-import { getVacancyStats } from "@/lib/hh";
+import { getProfessionVacancies } from "@/lib/hh";
 import { typoMarkdown } from "@/lib/typograf";
 
 type Body =
@@ -38,8 +38,8 @@ export async function POST(request: Request) {
   if (body.kind === "profession") {
     const p = getProfession(body.slug);
     if (!p) return plain("Профессия не найдена", 404);
-    const stats = await getVacancyStats(p.hh, city.hhId);
-    prompt = professionPrompt(p, city, stats.ok ? { avg: stats.avgSalary, found: stats.found } : undefined);
+    const stats = await getProfessionVacancies(p.slug, city.hhId);
+    prompt = professionPrompt(p, city, stats);
     fallback = fallbackProfession(p, city);
   } else if (body.kind === "free") {
     // нормализуем название, чтобы «Пилот» и « пилот » попадали в один кэш

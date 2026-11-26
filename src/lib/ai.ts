@@ -1,6 +1,7 @@
 import { formatStudy, type Profession } from "@/data/professions";
 import { KLIMOV_MAX, KLIMOV_TYPES, type KlimovType, PROFESSION_KLIMOV, klimovVerdict } from "@/data/klimov";
 import type { City } from "@/data/cities";
+import type { VacancyStats } from "./hh";
 import { google } from "@ai-sdk/google";
 import type { LanguageModel } from "ai";
 
@@ -40,10 +41,22 @@ function fmtK(n: number, k: number) {
   return `${Math.round(n * k)} тыс. ₸`;
 }
 
-export function professionPrompt(p: Profession, city: City, live?: { avg: number | null; found: number }) {
-  const liveLine = live
-    ? `Живые данные hh.kz по городу ${city.name}: найдено ${live.found} вакансий, средняя зарплата по вакансиям с указанной зарплатой — ${live.avg ? Math.round(live.avg / 1000) + " тыс. ₸" : "нет данных"}.`
-    : "";
+/** Факты о вакансиях для промпта — только то, что реально пришло с hh.kz */
+function vacancyFacts(stats: VacancyStats, city: City): string {
+  if (!stats.ok) {
+    const why = stats.reason === "no_query" ? stats.message : "данные hh.kz сейчас недоступны.";
+    return `Данных о вакансиях нет: ${why} Не называй число вакансий и не ссылайся на hh.kz.`;
+  }
+  const salary =
+    stats.medianSalary !== null && stats.withSalary >= 5
+      ? `медиана месячной зарплаты ${Math.round(stats.medianSalary / 1000)} тыс. ₸ (по ${stats.withSalary} вакансиям с указанной зарплатой; ${stats.netCount} из них — «на руки», ${stats.grossCount} — до вычета налогов)`
+      : `зарплату указали только в ${stats.withSalary} вакансиях — этого мало для вывода о зарплате`;
+  return `Данные hh.kz по городу ${city.name} (поиск по названию вакансии): сейчас открыто ${stats.found} вакансий; ${salary}.`;
+}
+
+export function professionPrompt(p: Profession, city: City, stats: VacancyStats) {
+  const liveLine = `${vacancyFacts(stats, city)}
+Правило про вакансии: о числе вакансий и зарплатах по вакансиям говори только этими цифрами и называй источник (hh.kz). Не придумывай другие числа вакансий, названия работодателей, проценты и тренды спроса. Оценку зарплаты из базы называй оценкой.`;
   return `Расскажи школьнику о профессии «${p.name}» так, чтобы он понял, подходит ли она ему. Город школьника: ${city.name}.
 
 Справка из нашей базы:
@@ -71,6 +84,7 @@ ${liveLine}
 export function freeProfessionPrompt(name: string, city: City) {
   return `Расскажи школьнику о профессии «${name}». Город школьника: ${city.name}, Казахстан.
 Если такой профессии не существует или запрос не про профессию — вежливо скажи об этом в одном абзаце и предложи похожие реальные профессии.
+У нас нет данных о вакансиях по этой профессии: не называй число вакансий, названия работодателей и статистику спроса.
 
 Структура ответа (кратко, 300–450 слов):
 ## Чем занимается

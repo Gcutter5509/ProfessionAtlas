@@ -68,8 +68,6 @@ export type Profession = {
   ent: string;
   /** Оценка зарплаты в Алматы, тыс. ₸/мес: [начинающий, опытный, эксперт] */
   salary: [number, number, number];
-  /** Поисковый запрос для hh.kz */
-  hh: string;
   workplaces: string[];
 };
 
@@ -96,7 +94,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Информационные системы», «Программная инженерия», «Вычислительная техника»"),
     ent: "Математика + Информатика",
     salary: [350, 800, 1600],
-    hh: "программист",
     workplaces: ["IT-компании", "Банки (Kaspi, Halyk и др.)", "Телеком", "Госсектор (цифровизация)", "Фриланс"],
   },
   {
@@ -111,7 +108,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Информационные системы», «Программная инженерия»; возможен старт через курсы"),
     ent: "Математика + Информатика",
     salary: [300, 700, 1400],
-    hh: "frontend разработчик",
     workplaces: ["IT-компании", "Digital-агентства", "Стартапы", "Фриланс"],
   },
   {
@@ -126,7 +122,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Математика», «Статистика», «Информационные системы», «Экономика»"),
     ent: "Математика + Информатика",
     salary: [300, 650, 1200],
-    hh: "аналитик данных",
     workplaces: ["Банки", "Ритейл", "Телеком", "Маркетплейсы", "Госорганы"],
   },
   {
@@ -141,7 +136,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Информационная безопасность», «Системы информационной безопасности»"),
     ent: "Математика + Информатика",
     salary: [350, 750, 1500],
-    hh: "информационная безопасность",
     workplaces: ["Банки", "Госорганы", "Телеком", "IT-компании"],
   },
   {
@@ -156,7 +150,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: COLLEGE(3, "«Вычислительная техника и ПО»; далее можно бакалавриат"),
     ent: "Математика + Информатика (если вуз)",
     salary: [200, 400, 700],
-    hh: "системный администратор",
     workplaces: ["Любые компании", "Школы и больницы", "Провайдеры"],
   },
   {
@@ -171,7 +164,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("IT-направления; часто стартуют после курсов"),
     ent: "Математика + Информатика",
     salary: [250, 550, 1000],
-    hh: "тестировщик",
     workplaces: ["IT-компании", "Банки", "Геймдев"],
   },
   {
@@ -186,7 +178,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Программная инженерия», «Компьютерные науки»"),
     ent: "Математика + Информатика",
     salary: [300, 650, 1300],
-    hh: "unity разработчик",
     workplaces: ["Игровые студии", "Аутсорс", "Инди-разработка"],
   },
   {
@@ -201,7 +192,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Дизайн», «Информационные системы»; есть путь через курсы и портфолио"),
     ent: "Творческий экзамен (дизайн) или Математика + Информатика",
     salary: [250, 600, 1200],
-    hh: "ux ui дизайнер",
     workplaces: ["IT-компании", "Банки", "Digital-агентства", "Фриланс"],
   },
   {
@@ -216,7 +206,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Компьютерные науки», «Математика»; желательна магистратура (+1–2 г.)"),
     ent: "Математика + Информатика",
     salary: [450, 950, 2000],
-    hh: "machine learning",
     workplaces: ["IT-компании", "Банки", "Научные центры", "Международные компании удалённо"],
   },
 
@@ -233,7 +222,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Медицинский вуз: «Общая медицина» 6 лет (с интернатурой) + резидентура 2 г.", years: 8 },
     ent: "Биология + Химия",
     salary: [250, 450, 900],
-    hh: "врач терапевт",
     workplaces: ["Поликлиники", "Больницы", "Частные клиники"],
   },
   {
@@ -248,7 +236,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "«Общая медицина» 6 лет + резидентура по хирургии 3–4 г.", years: 9 },
     ent: "Биология + Химия",
     salary: [300, 600, 1300],
-    hh: "хирург",
     workplaces: ["Больницы", "Травмпункты", "Частные клиники"],
   },
   {
@@ -263,7 +250,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "«Стоматология» 5 лет + интернатура/резидентура 1–2 г.", years: 6 },
     ent: "Биология + Химия",
     salary: [300, 650, 1500],
-    hh: "стоматолог",
     workplaces: ["Стоматологические клиники", "Собственный кабинет"],
   },
   {
@@ -278,7 +264,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: COLLEGE(3, "«Сестринское дело»; можно продолжить в вузе (прикладной бакалавриат)"),
     ent: "Не требуется для колледжа",
     salary: [180, 260, 400],
-    hh: "медсестра",
     workplaces: ["Больницы", "Поликлиники", "Школы", "Частные клиники"],
   },
   {
@@ -293,7 +278,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Колледж «Фармация» 3 г. или бакалавриат «Фармация» 5 лет", years: 3 },
     ent: "Биология + Химия",
     salary: [180, 300, 550],
-    hh: "фармацевт",
     workplaces: ["Аптеки", "Фармкомпании", "Лаборатории"],
   },
   {
@@ -308,7 +292,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Психология»; для клинической практики — магистратура"),
     ent: "Биология + География",
     salary: [180, 350, 800],
-    hh: "психолог",
     workplaces: ["Школы", "Клиники", "HR-отделы", "Частная практика"],
   },
   {
@@ -323,7 +306,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "«Ветеринарная медицина» 5 лет (аграрные вузы)", years: 5 },
     ent: "Биология + Химия",
     salary: [180, 330, 650],
-    hh: "ветеринарный врач",
     workplaces: ["Ветклиники", "Фермы", "Госветслужба"],
   },
   {
@@ -338,7 +320,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: COLLEGE(3, "«Лабораторная диагностика»"),
     ent: "Не требуется для колледжа",
     salary: [170, 260, 420],
-    hh: "лаборант",
     workplaces: ["Лаборатории (Invivo, Олимп и др.)", "Больницы"],
   },
 
@@ -355,7 +336,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("педагогические специальности (по предмету)"),
     ent: "Зависит от предмета (напр., Математика + Физика)",
     salary: [220, 350, 600],
-    hh: "учитель",
     workplaces: ["Школы", "Лицеи (НИШ, БИЛ)", "Онлайн-школы", "Репетиторство"],
   },
   {
@@ -370,7 +350,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: COLLEGE(3, "«Дошкольное воспитание и обучение»"),
     ent: "Не требуется для колледжа",
     salary: [160, 230, 350],
-    hh: "воспитатель",
     workplaces: ["Детские сады", "Развивающие центры"],
   },
   {
@@ -385,7 +364,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Иностранный язык: два иностранных языка», «Переводческое дело»"),
     ent: "Иностранный язык + Всемирная история",
     salary: [200, 400, 800],
-    hh: "преподаватель английского",
     workplaces: ["Школы", "Языковые центры", "Онлайн-платформы"],
   },
   {
@@ -400,7 +378,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Дефектология», «Специальная педагогика»"),
     ent: "Биология + География",
     salary: [200, 350, 650],
-    hh: "логопед",
     workplaces: ["Детские сады", "Школы", "Реабилитационные центры", "Частная практика"],
   },
 
@@ -417,7 +394,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Нефтегазовое дело» (Satbayev University, КБТУ, вузы Атырау)"),
     ent: "Математика + Физика",
     salary: [400, 900, 2000],
-    hh: "инженер нефть газ",
     workplaces: ["Тенгизшевройл", "КазМунайГаз", "NCOC", "Сервисные компании"],
   },
   {
@@ -432,7 +408,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: COLLEGE(3, "«Электроснабжение», «Электрооборудование»"),
     ent: "Не требуется для колледжа",
     salary: [220, 380, 650],
-    hh: "электромонтер",
     workplaces: ["Энергокомпании", "Заводы", "Стройки", "Своё дело"],
   },
   {
@@ -447,7 +422,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Электроэнергетика», «Теплоэнергетика» (АУЭС и др.)"),
     ent: "Математика + Физика",
     salary: [300, 550, 1000],
-    hh: "инженер энергетик",
     workplaces: ["Электростанции", "KEGOC", "Промышленные предприятия"],
   },
   {
@@ -462,7 +436,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: COLLEGE(2, "«Сварочное дело»"),
     ent: "Не требуется",
     salary: [250, 450, 900],
-    hh: "сварщик",
     workplaces: ["Заводы", "Стройки", "Нефтегаз (вахта)"],
   },
   {
@@ -477,7 +450,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Мехатроника», «Робототехника», «Автоматизация и управление»"),
     ent: "Математика + Физика",
     salary: [280, 550, 1000],
-    hh: "инженер автоматизации",
     workplaces: ["Заводы", "Горнодобывающие компании", "Стартапы"],
   },
   {
@@ -492,7 +464,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Горное дело» (Satbayev University, КарТУ)"),
     ent: "Математика + Физика",
     salary: [350, 700, 1400],
-    hh: "горный инженер",
     workplaces: ["Kazakhmys", "ERG", "Казатомпром", "Qarmet"],
   },
   {
@@ -507,7 +478,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: COLLEGE(3, "«Техническое обслуживание и ремонт автомобилей»"),
     ent: "Не требуется",
     salary: [200, 400, 800],
-    hh: "автомеханик",
     workplaces: ["СТО", "Дилерские центры", "Своё дело"],
   },
 
@@ -524,7 +494,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Колледж «Учёт и аудит» 3 г. или бакалавриат «Учёт и аудит» 4 г.", years: 3 },
     ent: "Математика + География",
     salary: [220, 400, 800],
-    hh: "бухгалтер",
     workplaces: ["Любые компании", "Аудиторские фирмы", "Аутсорс"],
   },
   {
@@ -539,7 +508,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Финансы», «Экономика»"),
     ent: "Математика + География",
     salary: [300, 650, 1400],
-    hh: "финансовый аналитик",
     workplaces: ["Банки", "Инвестфонды", "Big4", "Крупные компании"],
   },
   {
@@ -554,7 +522,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Маркетинг», «Менеджмент»"),
     ent: "Математика + География",
     salary: [250, 500, 1100],
-    hh: "маркетолог",
     workplaces: ["Бренды", "Агентства", "Маркетплейсы", "Фриланс"],
   },
   {
@@ -569,7 +536,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Можно начать без профильного образования; полезен бакалавриат «Менеджмент»", years: 0 },
     ent: "Математика + География (если вуз)",
     salary: [200, 450, 1200],
-    hh: "менеджер по продажам",
     workplaces: ["Торговые компании", "Банки", "Автосалоны", "IT"],
   },
   {
@@ -584,7 +550,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Менеджмент», «Психология», «Управление персоналом»"),
     ent: "Математика + География",
     salary: [220, 450, 900],
-    hh: "hr менеджер",
     workplaces: ["Крупные компании", "Кадровые агентства"],
   },
   {
@@ -599,7 +564,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Нет обязательного пути; полезны «Менеджмент», «Экономика», бизнес-инкубаторы (Astana Hub)", years: 0 },
     ent: "Математика + География (если вуз)",
     salary: [150, 700, 3000],
-    hh: "директор",
     workplaces: ["Своя компания"],
   },
   {
@@ -614,7 +578,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Логистика», «Транспорт»"),
     ent: "Математика + География",
     salary: [230, 450, 900],
-    hh: "логист",
     workplaces: ["Транспортные компании", "Маркетплейсы", "KTZ", "Склады"],
   },
 
@@ -631,7 +594,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Дизайн» (Академия им. Жургенова и др.)"),
     ent: "Творческий экзамен",
     salary: [200, 400, 800],
-    hh: "графический дизайнер",
     workplaces: ["Агентства", "Издательства", "Бренды", "Фриланс"],
   },
   {
@@ -646,7 +608,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Журналистика»"),
     ent: "Творческий экзамен",
     salary: [200, 380, 750],
-    hh: "журналист",
     workplaces: ["СМИ", "Телеканалы", "Онлайн-медиа", "PR"],
   },
   {
@@ -661,7 +622,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Курсы 3–6 мес. или «Маркетинг»/«Журналистика»", years: 0 },
     ent: "—",
     salary: [180, 350, 700],
-    hh: "smm",
     workplaces: ["Бренды", "Агентства", "Фриланс"],
   },
   {
@@ -676,7 +636,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Режиссура», «Кино и ТВ»; часто — курсы и портфолио"),
     ent: "Творческий экзамен",
     salary: [200, 400, 900],
-    hh: "видеомонтажер",
     workplaces: ["Продакшны", "Телеканалы", "Блогеры", "Фриланс"],
   },
   {
@@ -691,7 +650,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Переводческое дело»"),
     ent: "Иностранный язык + Всемирная история",
     salary: [200, 400, 900],
-    hh: "переводчик",
     workplaces: ["Бюро переводов", "Международные компании", "Госорганы", "Фриланс"],
   },
   {
@@ -706,7 +664,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Музыкальный колледж 4 г. / консерватория 4 г.", years: 4 },
     ent: "Творческий экзамен",
     salary: [150, 350, 900],
-    hh: "звукорежиссер",
     workplaces: ["Филармонии", "Студии", "Event-агентства"],
   },
 
@@ -723,7 +680,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Юриспруденция»"),
     ent: "Всемирная история + Основы права",
     salary: [230, 500, 1200],
-    hh: "юрист",
     workplaces: ["Юрфирмы", "Компании", "Госорганы", "Адвокатура"],
   },
   {
@@ -738,7 +694,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Академии МВД 4 г. (с госзаказом и гарантированной работой)", years: 4 },
     ent: "Всемирная история + Основы права",
     salary: [250, 380, 600],
-    hh: "полиция",
     workplaces: ["МВД", "Миграционная служба"],
   },
   {
@@ -753,7 +708,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Государственное и местное управление», «Юриспруденция», «Экономика»"),
     ent: "Математика + География",
     salary: [200, 350, 700],
-    hh: "главный специалист",
     workplaces: ["Акиматы", "Министерства", "ЦОНы"],
   },
   {
@@ -768,7 +722,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Социальная работа»"),
     ent: "Биология + География",
     salary: [150, 220, 350],
-    hh: "социальный работник",
     workplaces: ["Центры соцобслуживания", "НКО", "Акиматы"],
   },
 
@@ -785,7 +738,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Архитектура» (КазГАСА и др.)", 5),
     ent: "Творческий экзамен + Математика",
     salary: [250, 550, 1200],
-    hh: "архитектор",
     workplaces: ["Проектные институты", "Архбюро", "Девелоперы"],
   },
   {
@@ -800,7 +752,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Строительство», «Производство строительных материалов»"),
     ent: "Математика + Физика",
     salary: [300, 550, 1100],
-    hh: "инженер строитель",
     workplaces: ["Строительные компании", "Девелоперы", "Технадзор"],
   },
   {
@@ -815,7 +766,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Дизайн интерьера»; есть колледжи 3 г."),
     ent: "Творческий экзамен",
     salary: [220, 450, 1000],
-    hh: "дизайнер интерьера",
     workplaces: ["Студии дизайна", "Мебельные компании", "Фриланс"],
   },
   {
@@ -830,7 +780,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: COLLEGE(3, "«Геодезия и картография»; или бакалавриат 4 г."),
     ent: "Математика + Физика (если вуз)",
     salary: [250, 450, 800],
-    hh: "геодезист",
     workplaces: ["Стройки", "Землеустройство", "Горные компании"],
   },
 
@@ -847,7 +796,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Академия гражданской авиации ~4 г. + налёт часов", years: 4 },
     ent: "Математика + Физика",
     salary: [600, 1500, 3500],
-    hh: "пилот",
     workplaces: ["Air Astana", "FlyArystan", "SCAT", "Грузовые авиакомпании"],
   },
   {
@@ -862,7 +810,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Автошкола 2–4 мес. (с 18–21 лет)", years: 0 },
     ent: "Не требуется",
     salary: [300, 500, 900],
-    hh: "водитель категории C",
     workplaces: ["Логистические компании", "Маркетплейсы", "Международные перевозки"],
   },
 
@@ -879,7 +826,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: COLLEGE(3, "«Организация питания», «Повар»"),
     ent: "Не требуется",
     salary: [200, 350, 800],
-    hh: "повар",
     workplaces: ["Рестораны", "Отели", "Столовые", "Своё кафе"],
   },
   {
@@ -894,7 +840,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: COLLEGE(2, "«Парикмахерское искусство»; или курсы"),
     ent: "Не требуется",
     salary: [150, 350, 800],
-    hh: "парикмахер",
     workplaces: ["Салоны", "Барбершопы", "Свой кабинет"],
   },
   {
@@ -909,7 +854,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Туризм»; есть колледжи 3 г."),
     ent: "География + Иностранный язык",
     salary: [180, 330, 650],
-    hh: "менеджер по туризму",
     workplaces: ["Турагентства", "Отели", "Туроператоры"],
   },
   {
@@ -924,7 +868,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Физическая культура и спорт»; или колледж 3 г."),
     ent: "Биология + Творческий экзамен (физподготовка)",
     salary: [180, 350, 800],
-    hh: "тренер",
     workplaces: ["Фитнес-клубы", "Спортшколы", "Школы", "Онлайн"],
   },
 
@@ -941,7 +884,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Агрономия» (КазНАИУ, КАТУ им. Сейфуллина)"),
     ent: "Биология + Химия",
     salary: [220, 400, 800],
-    hh: "агроном",
     workplaces: ["Агрохолдинги", "Фермерские хозяйства", "Агротех-компании"],
   },
   {
@@ -956,7 +898,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Экология»"),
     ent: "Биология + География",
     salary: [220, 400, 750],
-    hh: "эколог",
     workplaces: ["Промышленные компании", "Министерство экологии", "Нацпарки", "НКО"],
   },
   {
@@ -971,7 +912,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Геология и разведка месторождений»"),
     ent: "Математика + Физика / География",
     salary: [280, 550, 1100],
-    hh: "геолог",
     workplaces: ["Горнодобывающие компании", "Нефтегаз", "Научные институты"],
   },
 
@@ -988,7 +928,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Биотехнология»; для науки — магистратура и PhD"),
     ent: "Биология + Химия",
     salary: [200, 380, 750],
-    hh: "биотехнолог",
     workplaces: ["Лаборатории", "Фармкомпании", "Пищевые производства", "НИИ"],
   },
   {
@@ -1003,7 +942,6 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: BACHELOR("«Химическая технология органических/неорганических веществ»"),
     ent: "Химия + Физика",
     salary: [250, 450, 850],
-    hh: "химик технолог",
     workplaces: ["НПЗ", "Химические заводы", "Лаборатории"],
   },
   {
@@ -1018,10 +956,9 @@ export const PROFESSIONS: Profession[] = typoDeep([
     study: { path: "Бакалавриат «Физика» 4 г. + магистратура 2 г. + PhD 3 г.", years: 9 },
     ent: "Математика + Физика",
     salary: [200, 400, 900],
-    hh: "научный сотрудник",
     workplaces: ["НИИ", "Университеты", "Институт ядерной физики", "Байконур"],
   },
-], ["slug", "sphere", "traits", "hh"]);
+], ["slug", "sphere", "traits"]);
 
 export const SPHERES = Array.from(new Set(PROFESSIONS.map((p) => p.sphere))) as Sphere[];
 
