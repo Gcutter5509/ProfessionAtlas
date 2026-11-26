@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Catalog } from "@/components/catalog";
-import { PROFESSIONS } from "@/data/professions";
 
 export default function Home() {
   return (
@@ -10,7 +9,7 @@ export default function Home() {
           Не знаешь, куда поступать после школы? Давай разберёмся вместе.
         </h1>
         <p className="mt-4 max-w-2xl text-white/85">
-          {PROFESSIONS.length} профессий с описанием, зарплатами по городам Казахстана, вакансиями с hh.kz, сроками обучения и
+          60+ профессий с описанием, зарплатами по городам Казахстана, вакансиями с hh.kz, сроками обучения и
           нужными навыками. Нажми на профессию — ИИ расскажет о ней подробно.
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
