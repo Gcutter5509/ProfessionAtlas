@@ -3,12 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { City } from "@/data/cities";
+import { hhQuery } from "@/data/hh-queries";
 import { PROFESSIONS } from "@/data/professions";
 import type { CityOverview, ProfessionMarket } from "@/lib/city-overview";
 import { gradient, SPHERE_THEME } from "./art";
 
 const fmt = (n: number) => new Intl.NumberFormat("ru-RU").format(Math.round(n));
 const NAME = new Map(PROFESSIONS.map((p) => [p.slug, p]));
+/** Для скольких профессий ищем вакансии (у некоторых поиска нет — см. HH_QUERIES) */
+const SEARCHED = PROFESSIONS.filter((p) => hhQuery(p.slug).query !== null).length;
 
 /** Медиане верим, только если зарплату указали хотя бы в 5 вакансиях */
 export const MIN_SAMPLE = 5;
@@ -41,7 +44,7 @@ export function CityMarket({ city, overview }: { city: City; overview: OverviewS
       <section className="rounded-2xl border border-line bg-card p-5">
         <h2 className="text-lg font-semibold">Рынок труда: {city.name}</h2>
         <p className="mt-1 text-sm text-muted">
-          Собираем вакансии hh.kz по всем {PROFESSIONS.length} профессиям — в первый раз это может занять до 15 секунд…
+          Собираем вакансии hh.kz по {SEARCHED} профессиям — в первый раз это может занять до 15 секунд…
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {[0, 1, 2].map((i) => (

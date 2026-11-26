@@ -8,6 +8,7 @@ import { plainText } from "@/lib/typograf";
 import { useCity } from "./city";
 import { CityMarket, liveSalary, useCityOverview } from "./city-market";
 import { Markdown } from "./markdown";
+import { Mascot } from "./mascot";
 import { useAiStream } from "./use-ai-stream";
 
 type Sort = "name" | "salary" | "study" | "demand";
@@ -275,8 +276,8 @@ function Roulette() {
       {p ? (
         <SphereArt sphere={p.sphere} seed={p.slug} className="h-28 shrink-0 sm:h-auto sm:w-56" />
       ) : (
-        <div className="flex h-28 shrink-0 items-center justify-center bg-gradient-to-br from-accent to-indigo-500 text-4xl font-bold text-white sm:h-auto sm:w-56">
-          ?
+        <div className="flex h-32 shrink-0 items-end justify-center overflow-hidden bg-gradient-to-br from-accent to-indigo-500 sm:h-auto sm:min-h-36 sm:w-56">
+          <Mascot variant="blindfold" className="-mb-2 h-full max-h-40 w-auto" />
         </div>
       )}
       <div className="flex flex-1 flex-col justify-center gap-3 px-4 pb-4 sm:flex-row sm:items-center sm:py-4 sm:pl-0">
